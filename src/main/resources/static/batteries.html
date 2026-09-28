@@ -1,0 +1,923 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>EV Battery Network - Batteries</title>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+        }
+
+        body {
+            background: #f4f7fb;
+            color: #222;
+        }
+
+        /* NAVBAR */
+        .navbar {
+            height: 65px;
+            background: #172033;
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 35px;
+        }
+
+        .logo {
+            font-size: 22px;
+            font-weight: bold;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 25px;
+        }
+
+        .nav-links a {
+            color: white;
+            text-decoration: none;
+            font-size: 15px;
+        }
+
+        .nav-links a:hover {
+            color: #4ade80;
+        }
+
+        /* MAIN */
+        .container {
+            padding: 35px;
+        }
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 25px;
+        }
+
+        .header h1 {
+            font-size: 28px;
+        }
+
+        .header p {
+            color: #777;
+            margin-top: 6px;
+        }
+
+        .add-btn {
+            background: #16a34a;
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            border-radius: 7px;
+            cursor: pointer;
+            font-size: 14px;
+        }
+
+        .add-btn:hover {
+            background: #15803d;
+        }
+
+        /* SEARCH */
+        .search-box {
+            background: white;
+            padding: 18px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+        }
+
+        .search-box input {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            outline: none;
+        }
+
+        /* TABLE */
+        .table-container {
+            background: white;
+            border-radius: 10px;
+            overflow-x: auto;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th {
+            background: #172033;
+            color: white;
+            padding: 15px;
+            text-align: left;
+        }
+
+        td {
+            padding: 14px 15px;
+            border-bottom: 1px solid #eee;
+        }
+
+        tr:hover {
+            background: #f8fafc;
+        }
+
+        /* STATUS */
+        .status {
+            padding: 6px 11px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: bold;
+        }
+
+        .active {
+            background: #dcfce7;
+            color: #15803d;
+        }
+
+        .inactive {
+            background: #fee2e2;
+            color: #dc2626;
+        }
+
+        /* SOH */
+        .good {
+            color: #16a34a;
+            font-weight: bold;
+        }
+
+        .medium {
+            color: #ca8a04;
+            font-weight: bold;
+        }
+
+        .bad {
+            color: #dc2626;
+            font-weight: bold;
+        }
+
+        /* BUTTONS */
+        .action-btn {
+            border: none;
+            padding: 7px 12px;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-right: 5px;
+        }
+
+        .view-btn {
+            background: #dbeafe;
+            color: #1d4ed8;
+        }
+
+        .delete-btn {
+            background: #fee2e2;
+            color: #dc2626;
+        }
+
+        /* MODAL */
+        .modal {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,0.5);
+            justify-content: center;
+            align-items: center;
+        }
+
+        .modal-content {
+            background: white;
+            width: 400px;
+            padding: 25px;
+            border-radius: 10px;
+        }
+
+        .modal-content h2 {
+            margin-bottom: 20px;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 6px;
+            font-size: 14px;
+            font-weight: bold;
+        }
+
+        .form-group input,
+        .form-group select {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+
+        .modal-buttons {
+            display: flex;
+            justify-content: flex-end;
+            gap: 10px;
+            margin-top: 20px;
+        }
+
+        .cancel-btn {
+            background: #e5e7eb;
+            border: none;
+            padding: 10px 18px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .save-btn {
+            background: #16a34a;
+            color: white;
+            border: none;
+            padding: 10px 18px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        /* MESSAGE */
+        #message {
+            margin-bottom: 15px;
+            font-weight: bold;
+        }
+
+        @media(max-width: 700px) {
+
+            .navbar {
+                padding: 0 15px;
+            }
+
+            .nav-links {
+                gap: 10px;
+            }
+
+            .container {
+                padding: 15px;
+            }
+
+            .header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 15px;
+            }
+        }
+
+    </style>
+</head>
+
+<body>
+
+<!-- NAVBAR -->
+
+<div class="navbar">
+
+    <div class="logo">
+        ⚡ EV Battery Network
+    </div>
+
+    <div class="nav-links">
+        <a href="index.html">Home</a>
+        <a href="dashboard.html">Dashboard</a>
+        <a href="batteries.html">Batteries</a>
+    </div>
+
+</div>
+
+
+<!-- MAIN -->
+
+<div class="container">
+
+    <div class="header">
+
+        <div>
+            <h1>Battery Management</h1>
+            <p>Monitor and manage EV battery packs</p>
+        </div>
+
+        <button class="add-btn" onclick="openModal()">
+            + Add Battery
+        </button>
+
+    </div>
+
+
+    <div id="message"></div>
+
+
+    <!-- SEARCH -->
+
+    <div class="search-box">
+
+        <input
+            type="text"
+            id="searchInput"
+            placeholder="Search battery by model or status..."
+            onkeyup="searchBattery()"
+        >
+
+    </div>
+
+
+    <!-- TABLE -->
+
+    <div class="table-container">
+
+        <table>
+
+            <thead>
+
+                <tr>
+
+                    <th>ID</th>
+                    <th>Battery Code</th>
+                    <th>Model</th>
+                    <th>Capacity</th>
+                    <th>State of Health</th>
+                    <th>Station Location</th>
+                    <th>Status</th>
+                    <th>Actions</th>
+
+                </tr>
+
+            </thead>
+
+            <tbody id="batteryTable">
+
+                <tr>
+                    <td colspan="8" style="text-align:center;">
+                        Loading batteries...
+                    </td>
+                </tr>
+
+            </tbody>
+
+        </table>
+
+    </div>
+
+</div>
+
+
+<!-- ADD BATTERY MODAL -->
+
+<div class="modal" id="batteryModal">
+
+    <div class="modal-content">
+
+        <h2>Add New Battery</h2>
+
+        <form id="batteryForm">
+
+            <div class="form-group">
+
+                <label>Battery Code</label>
+
+                <input
+                    type="text"
+                    id="batteryCode"
+                    placeholder="BAT-001"
+                >
+
+            </div>
+
+
+            <div class="form-group">
+
+                <label>Model</label>
+
+                <input
+                    type="text"
+                    id="model"
+                    placeholder="EV-48V"
+                    required
+                >
+
+            </div>
+
+
+            <div class="form-group">
+
+                <label>Capacity</label>
+
+                <input
+                    type="number"
+                    id="capacity"
+                    placeholder="48"
+                >
+
+            </div>
+
+
+            <div class="form-group">
+
+                <label>State of Health (%)</label>
+
+                <input
+                    type="number"
+                    id="stateOfHealth"
+                    placeholder="95"
+                    step="0.1"
+                >
+
+            </div>
+
+
+            <div class="form-group">
+
+                <label>Station Location</label>
+
+                <input
+                    type="text"
+                    id="stationLocation"
+                    placeholder="Chennai"
+                >
+
+            </div>
+
+
+            <div class="form-group">
+
+                <label>Status</label>
+
+                <select id="status">
+
+                    <option value="ACTIVE">ACTIVE</option>
+                    <option value="INACTIVE">INACTIVE</option>
+
+                </select>
+
+            </div>
+
+
+            <div class="modal-buttons">
+
+                <button
+                    type="button"
+                    class="cancel-btn"
+                    onclick="closeModal()">
+                    Cancel
+                </button>
+
+                <button
+                    type="submit"
+                    class="save-btn">
+                    Save Battery
+                </button>
+
+            </div>
+
+        </form>
+
+    </div>
+
+</div>
+
+
+<script>
+
+    /*
+       IMPORTANT:
+
+       If your Spring Boot application
+       is running on 8081:
+
+       http://localhost:8081/api/batteries
+
+       If it is running on 8080,
+       change 8081 to 8080.
+    */
+
+    const API_URL = "http://localhost:8081/api/batteries";
+
+
+    // ==============================
+    // LOAD BATTERIES
+    // ==============================
+
+    async function loadBatteries() {
+
+        try {
+
+            const response = await fetch(API_URL);
+
+            if (!response.ok) {
+                throw new Error("Unable to fetch batteries");
+            }
+
+            const batteries = await response.json();
+
+            displayBatteries(batteries);
+
+        } catch (error) {
+
+            console.error(error);
+
+            document.getElementById("batteryTable").innerHTML = `
+                <tr>
+                    <td colspan="8" style="text-align:center;color:red;">
+                        Unable to connect to Spring Boot server.
+                    </td>
+                </tr>
+            `;
+
+        }
+
+    }
+
+
+    // ==============================
+    // DISPLAY BATTERIES
+    // ==============================
+
+    function displayBatteries(batteries) {
+
+        const table = document.getElementById("batteryTable");
+
+        table.innerHTML = "";
+
+        if (!batteries || batteries.length === 0) {
+
+            table.innerHTML = `
+                <tr>
+                    <td colspan="8" style="text-align:center;">
+                        No batteries found
+                    </td>
+                </tr>
+            `;
+
+            return;
+        }
+
+
+        batteries.forEach(battery => {
+
+            let sohClass = "good";
+
+            if (battery.stateOfHealth < 70) {
+                sohClass = "bad";
+            }
+            else if (battery.stateOfHealth < 85) {
+                sohClass = "medium";
+            }
+
+
+            let statusClass =
+                battery.status === "ACTIVE"
+                ? "active"
+                : "inactive";
+
+
+            table.innerHTML += `
+
+                <tr>
+
+                    <td>${battery.id ?? "-"}</td>
+
+                    <td>${battery.batteryCode ?? "-"}</td>
+
+                    <td>${battery.model ?? "-"}</td>
+
+                    <td>${battery.capacity ?? "-"}</td>
+
+                    <td class="${sohClass}">
+                        ${battery.stateOfHealth ?? "-"}%
+                    </td>
+
+                    <td>
+                        ${battery.stationLocation ?? "-"}
+                    </td>
+
+                    <td>
+                        <span class="status ${statusClass}">
+                            ${battery.status ?? "-"}
+                        </span>
+                    </td>
+
+                    <td>
+
+                        <button
+                            class="action-btn view-btn"
+                            onclick="viewBattery(${battery.id})">
+                            View
+                        </button>
+
+                        <button
+                            class="action-btn delete-btn"
+                            onclick="deleteBattery(${battery.id})">
+                            Delete
+                        </button>
+
+                    </td>
+
+                </tr>
+
+            `;
+
+        });
+
+    }
+
+
+    // ==============================
+    // SEARCH
+    // ==============================
+
+    function searchBattery() {
+
+        const input =
+            document
+            .getElementById("searchInput")
+            .value
+            .toLowerCase();
+
+
+        const rows =
+            document
+            .getElementById("batteryTable")
+            .getElementsByTagName("tr");
+
+
+        for (let row of rows) {
+
+            const text =
+                row.innerText.toLowerCase();
+
+            row.style.display =
+                text.includes(input)
+                ? ""
+                : "none";
+
+        }
+
+    }
+
+
+    // ==============================
+    // OPEN MODAL
+    // ==============================
+
+    function openModal() {
+
+        document.getElementById("batteryModal").style.display =
+            "flex";
+
+    }
+
+
+    // ==============================
+    // CLOSE MODAL
+    // ==============================
+
+    function closeModal() {
+
+        document.getElementById("batteryModal").style.display =
+            "none";
+
+    }
+
+
+    // ==============================
+    // ADD BATTERY
+    // ==============================
+
+    document
+        .getElementById("batteryForm")
+        .addEventListener("submit", async function(event) {
+
+            event.preventDefault();
+
+
+            const battery = {
+
+                batteryCode:
+                    document
+                    .getElementById("batteryCode")
+                    .value,
+
+                model:
+                    document
+                    .getElementById("model")
+                    .value,
+
+                capacity:
+                    document
+                    .getElementById("capacity")
+                    .value
+                    ? Number(
+                        document
+                        .getElementById("capacity")
+                        .value
+                    )
+                    : null,
+
+                stateOfHealth:
+                    document
+                    .getElementById("stateOfHealth")
+                    .value
+                    ? Number(
+                        document
+                        .getElementById("stateOfHealth")
+                        .value
+                    )
+                    : null,
+
+                stationLocation:
+                    document
+                    .getElementById("stationLocation")
+                    .value,
+
+                status:
+                    document
+                    .getElementById("status")
+                    .value
+
+            };
+
+
+            try {
+
+                const response = await fetch(API_URL, {
+
+                    method: "POST",
+
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+
+                    body: JSON.stringify(battery)
+
+                });
+
+
+                if (!response.ok) {
+
+                    throw new Error(
+                        "Failed to add battery"
+                    );
+
+                }
+
+
+                document.getElementById("message").innerHTML =
+                    "Battery added successfully!";
+
+
+                document.getElementById("message").style.color =
+                    "green";
+
+
+                document
+                    .getElementById("batteryForm")
+                    .reset();
+
+
+                closeModal();
+
+
+                loadBatteries();
+
+
+            } catch (error) {
+
+                console.error(error);
+
+                document.getElementById("message").innerHTML =
+                    "Failed to add battery.";
+
+                document.getElementById("message").style.color =
+                    "red";
+
+            }
+
+        });
+
+
+    // ==============================
+    // VIEW BATTERY
+    // ==============================
+
+    async function viewBattery(id) {
+
+        try {
+
+            const response =
+                await fetch(`${API_URL}/${id}`);
+
+
+            const battery =
+                await response.json();
+
+
+            alert(
+                "Battery Details\n\n" +
+
+                "ID: " +
+                (battery.id ?? "-") +
+
+                "\nModel: " +
+                (battery.model ?? "-") +
+
+                "\nBattery Code: " +
+                (battery.batteryCode ?? "-") +
+
+                "\nCapacity: " +
+                (battery.capacity ?? "-") +
+
+                "\nSOH: " +
+                (battery.stateOfHealth ?? "-") +
+
+                "%\nStatus: " +
+                (battery.status ?? "-")
+            );
+
+        } catch (error) {
+
+            alert("Unable to load battery details.");
+
+        }
+
+    }
+
+
+    // ==============================
+    // DELETE BATTERY
+    // ==============================
+
+    async function deleteBattery(id) {
+
+        const confirmDelete =
+            confirm(
+                "Are you sure you want to delete this battery?"
+            );
+
+
+        if (!confirmDelete) {
+            return;
+        }
+
+
+        try {
+
+            const response =
+                await fetch(
+                    `${API_URL}/${id}`,
+                    {
+                        method: "DELETE"
+                    }
+                );
+
+
+            if (!response.ok) {
+
+                throw new Error(
+                    "Delete failed"
+                );
+
+            }
+
+
+            alert(
+                "Battery deleted successfully!"
+            );
+
+
+            loadBatteries();
+
+
+        } catch (error) {
+
+            console.error(error);
+
+            alert(
+                "Unable to delete battery."
+            );
+
+        }
+
+    }
+
+
+    // ==============================
+    // INITIAL LOAD
+    // ==============================
+
+    loadBatteries();
+
+</script>
+
+</body>
+</html>

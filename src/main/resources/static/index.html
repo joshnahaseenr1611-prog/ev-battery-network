@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>EV Battery Network</title>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+        }
+
+        body {
+            min-height: 100vh;
+            background: linear-gradient(135deg, #0f172a, #123c35, #0f766e);
+            color: white;
+        }
+
+        .navbar {
+            height: 70px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 60px;
+            background: rgba(0, 0, 0, 0.25);
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .logo {
+            font-size: 24px;
+            font-weight: bold;
+        }
+
+        .logo span {
+            color: #5eead4;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 30px;
+        }
+
+        .nav-links a {
+            color: white;
+            text-decoration: none;
+            font-size: 15px;
+        }
+
+        .nav-links a:hover {
+            color: #5eead4;
+        }
+
+        .hero {
+            min-height: calc(100vh - 70px);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 60px 8%;
+            gap: 50px;
+        }
+
+        .hero-content {
+            max-width: 650px;
+        }
+
+        .tag {
+            display: inline-block;
+            padding: 8px 15px;
+            background: rgba(94, 234, 212, 0.15);
+            border: 1px solid rgba(94, 234, 212, 0.4);
+            border-radius: 20px;
+            color: #5eead4;
+            font-size: 13px;
+            margin-bottom: 20px;
+        }
+
+        h1 {
+            font-size: 52px;
+            line-height: 1.1;
+            margin-bottom: 20px;
+        }
+
+        h1 span {
+            color: #5eead4;
+        }
+
+        .description {
+            font-size: 18px;
+            line-height: 1.7;
+            color: #d1d5db;
+            margin-bottom: 30px;
+        }
+
+        .buttons {
+            display: flex;
+            gap: 15px;
+        }
+
+        .btn {
+            padding: 14px 25px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: bold;
+            cursor: pointer;
+            border: none;
+            font-size: 15px;
+        }
+
+        .primary {
+            background: #14b8a6;
+            color: white;
+        }
+
+        .primary:hover {
+            background: #0d9488;
+        }
+
+        .secondary {
+            border: 1px solid #5eead4;
+            color: #5eead4;
+            background: transparent;
+        }
+
+        .secondary:hover {
+            background: rgba(94, 234, 212, 0.1);
+        }
+
+        .dashboard-card {
+            width: 380px;
+            padding: 25px;
+            background: rgba(255,255,255,0.08);
+            border: 1px solid rgba(255,255,255,0.15);
+            border-radius: 18px;
+            backdrop-filter: blur(10px);
+            box-shadow: 0 20px 50px rgba(0,0,0,0.3);
+        }
+
+        .card-title {
+            font-size: 18px;
+            margin-bottom: 20px;
+        }
+
+        .stat {
+            display: flex;
+            justify-content: space-between;
+            padding: 15px;
+            margin-bottom: 12px;
+            background: rgba(0,0,0,0.2);
+            border-radius: 10px;
+        }
+
+        .stat-label {
+            color: #cbd5e1;
+        }
+
+        .stat-value {
+            font-weight: bold;
+            color: #5eead4;
+        }
+
+        .health {
+            color: #86efac;
+        }
+
+        .recycle {
+            color: #facc15;
+        }
+
+        .footer {
+            text-align: center;
+            padding: 20px;
+            color: #94a3b8;
+            font-size: 13px;
+        }
+
+        @media (max-width: 900px) {
+
+            .navbar {
+                padding: 0 25px;
+            }
+
+            .nav-links {
+                display: none;
+            }
+
+            .hero {
+                flex-direction: column;
+                text-align: center;
+                padding: 50px 25px;
+            }
+
+            h1 {
+                font-size: 40px;
+            }
+
+            .buttons {
+                justify-content: center;
+            }
+
+            .dashboard-card {
+                width: 100%;
+                max-width: 380px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<!-- NAVBAR -->
+<nav class="navbar">
+
+    <div class="logo">
+        ⚡ EV<span>Network</span>
+    </div>
+
+    <div class="nav-links">
+        <a href="#">Home</a>
+        <a href="#">Battery Network</a>
+        <a href="#">Recycling</a>
+        <a href="#">Reports</a>
+    </div>
+
+</nav>
+
+
+<!-- HERO SECTION -->
+<section class="hero">
+
+    <div class="hero-content">
+
+        <div class="tag">
+            Smart EV Battery Management Platform
+        </div>
+
+        <h1>
+            Public EV Fleet
+            <span>Battery Network</span>
+        </h1>
+
+        <p class="description">
+            A centralized platform for managing EV battery swapping,
+            battery health monitoring, fleet billing, and circular
+            battery recycling operations.
+        </p>
+
+        <div class="buttons">
+
+            <a href="/dashboard.html"
+               class="btn primary">
+                Open Dashboard
+            </a>
+
+            <a href="/batteries.html"
+               class="btn secondary">
+                Manage Batteries
+            </a>
+
+        </div>
+
+    </div>
+
+
+    <!-- LIVE OVERVIEW CARD -->
+    <div class="dashboard-card">
+
+        <div class="card-title">
+            ⚡ Network Overview
+        </div>
+
+        <div class="stat">
+            <span class="stat-label">
+                Active Batteries
+            </span>
+
+            <span class="stat-value">
+                128
+            </span>
+        </div>
+
+        <div class="stat">
+            <span class="stat-label">
+                Today's Swaps
+            </span>
+
+            <span class="stat-value">
+                342
+            </span>
+        </div>
+
+        <div class="stat">
+            <span class="stat-label">
+                Average SoH
+            </span>
+
+            <span class="stat-value health">
+                87%
+            </span>
+        </div>
+
+        <div class="stat">
+            <span class="stat-label">
+                Recycling Queue
+            </span>
+
+            <span class="stat-value recycle">
+                14
+            </span>
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- FOOTER -->
+<div class="footer">
+    © 2026 EV Battery Network | Battery Swapping & Circular Recycling
+</div>
+
+
+</body>
+</html>
